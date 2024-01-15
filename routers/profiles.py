@@ -50,7 +50,7 @@ async def get_profile_by_id(profile_id: int = Path(gt=0), db: Session = Depends(
 
 @router.put("/{profile_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_profile_by_id(profile_data: Profile, profile_id: int = Path(gt=0), db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
-    profile = db.query(Profiles).filter(Profiles.id == profile_id).filter(Profiles.name == current_user.get("id")).first()
+    profile = db.query(Profiles).filter(Profiles.id == profile_id).first()
 
     if profile is None:
         raise HTTPException(status_code=404, detail=f"Profile with id #{profile_id} was not found")
@@ -66,7 +66,7 @@ async def update_profile_by_id(profile_data: Profile, profile_id: int = Path(gt=
 
 @router.delete("/{profile_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_profile_by_id(profile_id: int = Path(gt=0), db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
-    delete_profile = db.query(Profiles).filter(Profiles.id == profile_id).filter(Profiles.name == current_user.get("id")).first()
+    delete_profile = db.query(Profiles).filter(Profiles.id == profile_id).first()
 
     if delete_profile is None:
         raise HTTPException(status_code=404, detail=f"Profile with id #{profile_id} was not found")
