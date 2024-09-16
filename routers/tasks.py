@@ -44,7 +44,7 @@ async def create_task(task_data: Task, db: Session = Depends(get_db), current_us
 
 @router.get("/{task_id}", status_code=status.HTTP_200_OK)
 async def get_task_by_id(task_id: int = Path(gt=0), db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
-    task = db.query(Tasks).filter(Tasks.id == task_id).filter(Tasks.author == current_user.get("id")).first()
+    task = db.query(Tasks).filter(Tasks.id == task_id).first()
     if task is not None:
         return task
     raise HTTPException(status_code=404, detail=f"Task with id #{task_id} was not found")
